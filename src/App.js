@@ -1,24 +1,69 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useState } from 'react';
+import Semaforo from './Components/Semaforo/index'
+import ControlSemaforo from './Components/ControlSemaforo';
 import './App.css';
 
+/*
+ const useState = () => {
+   return [ nombre_del_estado, () => {modifica el estado}]
+ }
+ */
 function App() {
+  const [etapa, setEtapa] = useState("siga")
+  const [isLogged, setIsLogged] = useState(false)
+
+  const modificarSemaforo = event => {
+    const value = event.target.value
+    console.log(value)
+
+    setEtapa(value)
+  }
+
+  const loginHandler = () => {
+    setIsLogged( !isLogged )
+  }
+
+  const arrayDeEtapas = [
+    {
+      value:"siga",
+      text:"Siga"
+    },
+    {
+      value:"precaucion",
+      text:"Precaucion"
+    },
+    {
+      value:"alto",
+      text:"Alto"
+    },
+    {
+      value:"broken",
+      text:"Fuera de servicio"
+    },
+    {
+      value:"fixing",
+      text:"En reparación"
+    }
+  ]
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {
+        isLogged ? (
+          <>
+            <ControlSemaforo 
+              controlHandler = { modificarSemaforo }
+              controlOptions = { arrayDeEtapas }
+            />
+            <Semaforo stage = { etapa }/>
+          </>
+        ) : (
+          <>
+            <h1>Inicia sesión para continuar</h1>
+            <button onClick={ loginHandler }>Iniciar sesión</button>
+          </>
+        )
+      }
     </div>
   );
 }
